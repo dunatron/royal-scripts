@@ -71,6 +71,7 @@ class Newsletter extends DataObject
         $templateID = $this->TemplateID;
         $this->setMailChimpTemplate($newsletterID, $templateID);
         //$this->createMailChimpContent($newsletterID);
+        $this->patchTemplate($this->TemplateID);
     }
 
     /*
@@ -111,7 +112,11 @@ class Newsletter extends DataObject
         $TemplateArr = array();
 
         $service = $this->ChimpService();
-        $endpoint = 'templates?folder_id=73649e8476';
+        //$endpoint = 'templates?folder_id=73649e8476';
+        //$endpoint = 'templates?type=user';
+        //$endpoint = 'templates?folder_id=73649e8476';
+        $endpoint = 'templates/?created_by=Heath Dunlop';
+        //$endpoint = "templates";
         $response = $service->request($endpoint, 'GET');
         $body = $response->getBody();
         $jsonObj = json_decode($body);
@@ -169,6 +174,21 @@ class Newsletter extends DataObject
         $service->request($endpoint, 'PUT', $jObject);
     }
 
+    public function patchTemplate($templateID)
+    {
+        $html = $this->BuildMailChimpContent();
+        $service = $this->ChimpService();
+        $endpoint = 'templates/'.$templateID;
+
+        $obj = new stdClass();
+        $obj->html = $html;
+        $data = json_encode($obj);
+
+        $response = $service->request($endpoint, 'PATCH', $data);
+        $body = $response->getBody();
+        error_log($body);
+    }
+
     public function updateMailChimpCampaign()
     {
 
@@ -186,11 +206,11 @@ class Newsletter extends DataObject
         $campaign_id = $ID;
         $endpoint = 'campaigns/' . $campaign_id . '/content';
 
-//        $obj = new stdClass();
-//        $obj->html = $css . '<h1>' . $html;
-//        $data = json_encode($obj);
-//        $service->request($endpoint, 'PUT', $data);
-        $service->request($endpoint, 'PUT');
+        $obj = new stdClass();
+        $obj->html = $css . '<h1>' . $html;
+        $data = json_encode($obj);
+        $service->request($endpoint, 'PUT', $data);
+       // $service->request($endpoint, 'PUT');
     }
 
     /*

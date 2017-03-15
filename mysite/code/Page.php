@@ -361,6 +361,10 @@ class Page_Controller extends ContentController
             $TemplateArray->add($obj);
         }
 
+        echo '<pre>';
+        var_dump($jObject);
+        echo '</pre>';
+
         $data = ArrayData::create(array(
             'Templates' => $TemplateArray
         ));
