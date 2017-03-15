@@ -340,13 +340,16 @@ class Page_Controller extends ContentController
 
     public function getMailChimpTemplates()
     {
-        $service = $this->ChimpService();
-        $service->httpHeader('Authorization: apikey b055b193339e717f0e9aa5065b24949d-us14');
-        $endpoint = 'templates?count=50';
+        $chimpService = new RestfulService('https://us4.api.mailchimp.com/3.0/');
+        $service = $chimpService;
+        $service->httpHeader('Authorization: apikey aec1aaaf3d113585538ca63cf101801c-us4');
+        $endpoint = 'templates?count=50&folder_id=73649e8476';  //73649e8476->royal-2 folderid
         $response = $service->request($endpoint, 'GET');
+
 
         $body = $response->getBody();
         $jObject = json_decode($body);
+        error_log($body);
 
         $TemplateArray = new ArrayList();
         foreach ($jObject->templates as $t){
