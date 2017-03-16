@@ -5,7 +5,17 @@ class Page extends SiteTree
 
     private static $db = array();
 
-    private static $has_one = array();
+    private static $has_one = array(
+        'NewsLetterImage' => 'Image'
+    );
+
+    public function getCMSFields()
+    {
+        $fields = parent::getCMSFields();
+        $uploadField = UploadField::create('NewsLetterImage', 'news letter image');
+        $fields->addFieldToTab('Root.NewsLetterImage', $uploadField);
+        return $fields;
+    }
 }
 
 class Page_Controller extends ContentController
