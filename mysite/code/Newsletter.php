@@ -89,10 +89,8 @@ class Newsletter extends DataObject
         //error_log($this->MailChimpNewsletterID);
         $templateID = $this->TemplateID;
         $this->setMailChimpTemplate($newsletterID, $templateID);
-        //$this->createMailChimpContent($newsletterID);
-        //$this->updateMailChimpCampaignContent($newsletterID, $templateID);
-        // get default content for template
-        //$this->getTemplateDefaultContent($templateID);
+
+        $this->BuildNewsletterContent();
     }
 
     public function getAllPages()
@@ -149,8 +147,8 @@ class Newsletter extends DataObject
         $service = $this->ChimpService();
         //$endpoint = 'templates?folder_id=73649e8476';
         //$endpoint = 'templates?type=user';
-        //$endpoint = 'templates?folder_id=73649e8476';
-        $endpoint = 'templates/?created_by=Heath Dunlop';
+        $endpoint = 'templates?folder_id=73649e8476';
+        //$endpoint = 'templates/?created_by=Heath Dunlop';
         //$endpoint = "templates";
         $response = $service->request($endpoint, 'GET');
         $body = $response->getBody();
@@ -196,6 +194,7 @@ class Newsletter extends DataObject
      * @param $campaignID
      * @param $templateID
      * PUT request to set newsletter/campaign template
+     * also update the content for template
      */
     public function setMailChimpTemplate($campaignID, $templateID)
     {
@@ -205,12 +204,27 @@ class Newsletter extends DataObject
         $endpoint = 'campaigns/' . $campaignID . '/content';
         $obj = new stdClass();
         $obj->template->id = $idForTemplate;
-        $obj->template->sections->body = 'Section One';
-        $obj->template->sections->body2 = 'Section Two';
+
+        // Where to inject content
+        $data = $this->BuildNewsletterContent();
+
+
+        $obj->template->sections->header_image = 'http://dunedin.whatshapp.nz/assets/Logos/_resampled/ScaleHeightWyI1MCJd/dunedin-logo-done2.png';
+        $obj->template->sections->main_title = $data->MainSection->Title;
+        $obj->template->sections->main_content = $data->MainSection->Content;
+        // Second content
+        $obj->template->sections->second_title = $data->SecondSection->Title;
+        $obj->template->sections->second_content = $data->SecondSection->Content;
+        // Third content
+        $obj->template->sections->third_title = $data->ThirdSection->Title;
+        $obj->template->sections->third_content = $data->ThirdSection->Content;
         $jObject = json_encode($obj);
         $service->request($endpoint, 'PUT', $jObject);
     }
 
+    /*
+     * Currently not used
+     */
     public function updateMailChimpCampaignContent($newsletterID, $templateID)
     {
         $service = $this->ChimpService();
@@ -225,9 +239,12 @@ class Newsletter extends DataObject
 
         $response = $service->request($endpoint, 'PUT', $data);
         $bod = $response->getBody();
-        error_log($bod);
+        //error_log($bod);
     }
 
+    /*
+     * Can use this to get default content for template
+     */
     public function getTemplateDefaultContent($templateID)
     {
         $service = $this->ChimpService();
@@ -240,54 +257,47 @@ class Newsletter extends DataObject
 
     }
 
-
-    /*
-     * Step 3 {create MailChimp content for newsletter/campaign}
-     * create mail chimp content from campaign/newsletter {$ID}
-     */
-    public function createMailChimpContent($ID)
+    public function BuildNewsletterContent()
     {
-        $html = $this->BuildMailChimpContent();
-        $css = $this->BuildMailChimpCSS();
-        $service = $this->ChimpService();
-        $campaign_id = $ID;
-        $endpoint = 'campaigns/' . $campaign_id . '/content';
+        $main = Page::get()->byID($this->MainLetterBlock);
+        $second = Page::get()->byID($this->SecondLetterBlock);
+        $third  = Page::get()->byID($this->ThirdLetterBlock);
 
-        $obj = new stdClass();
-        $obj->html = $css . '<h1>' . $html;
-        $data = json_encode($obj);
-        $service->request($endpoint, 'PUT', $data);
-        // $service->request($endpoint, 'PUT');
-    }
+        $MainData = ArrayData::create(array(
+            'Title' =>  $main->Title,
+            'Content'   =>  strip_tags($main->Content)
+        ));
 
-    /*
-     * html content for newsletter
-     */
-    public function BuildMailChimpContent()
-    {
-        $html = '';
-        $pages = Page::get();
-        foreach ($pages as $p) {
-            $html .= '<div class="page-wrap">';
-            $html .= $p->Title;
-            $html .= $p->Content;
-            $html .= '</div>';
+        $SecondData = ArrayData::create(array(
+            'Title' =>  $second->Title,
+            'Content'   =>  strip_tags($second->Content)
+        ));
+
+        $ThirdData = ArrayData::create(array(
+            'Title' =>  $third->Title,
+            'Content'   =>  strip_tags($third->Content)
+        ));
+
+        $extraString = $this->ExtraLetterLinks;
+        $extraArray = explode(",", $extraString);
+        $extras = Page::get()->byIDs($extraArray);
+
+        // Generate extra links as array
+        $baseURL = $_SERVER['SERVER_NAME'];
+        $extraLinksArray = array();
+        foreach ($extras as $e){
+            $link = $baseURL .'/'.$e->URLSegment;
+            array_push($extraLinksArray, $link);
         }
-        return $html;
+
+        $data = ArrayData::create(array(
+            'MainSection' => $MainData,
+            'SecondSection' =>  $SecondData,
+            'ThirdSection'  =>  $ThirdData
+        ));
+
+        return $data;
     }
 
-    /*
-     * css for newsletter
-     */
-    public function BuildMailChimpCSS()
-    {
-        $css = '
-<style>
-h1{ color:blue;}
-.page-wrap{
-border: 1px dashed palevioletred;
-}
-</style>';
-        return $css;
-    }
+
 }
