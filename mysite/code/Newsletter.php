@@ -9,6 +9,7 @@
 class Newsletter extends DataObject
 {
 
+    // mailchimp acc->user heathdunlop pass->RealSamdog11!
     private static $db = array(
         'Title' => 'Varchar(100)',
         'MailingList' => 'Varchar(100)',
