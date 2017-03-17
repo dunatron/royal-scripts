@@ -97,10 +97,7 @@ class Newsletter extends DataObject
         $PageArray = array();
         $pages = Page::get();
         foreach ($pages as $p) {
-            $obj = new DataObject();
-            $obj->ID = $p->ID;
-            $obj->Title = $p->Title;
-            $PageArray[$obj->ID] = $obj->Title;
+            $PageArray[$p->ID]  =   $p->Title;
         }
         return $PageArray;
     }
@@ -206,15 +203,15 @@ class Newsletter extends DataObject
         // Where to inject content
         $data = $this->BuildNewsletterContent();
 
-
-//        $obj->template->sections->header_image = 'http://dunedin.whatshapp.nz/assets/Logos/_resampled/ScaleHeightWyI1MCJd/dunedin-logo-done2.png';
-        $obj->template->sections->content_1 = $data->MainSection->ImageURL;
+        $obj->template->sections->content_9 = $data->MainSection->ImageURL;
         $obj->template->sections->main_title = $data->MainSection->Title;
         $obj->template->sections->main_content = $data->MainSection->Content;
         // Second content
+        $obj->template->sections->second_image = $data->SecondSection->ImageURL;
         $obj->template->sections->second_title = $data->SecondSection->Title;
         $obj->template->sections->second_content = $data->SecondSection->Content;
         // Third content
+        $obj->template->sections->third_image = $data->ThirdSection->ImageURL;
         $obj->template->sections->third_title = $data->ThirdSection->Title;
         $obj->template->sections->third_content = $data->ThirdSection->Content;
         // Ectra links
@@ -224,38 +221,13 @@ class Newsletter extends DataObject
     }
 
     /*
-     * Currently not used
-     */
-    public function updateMailChimpCampaignContent($newsletterID, $templateID)
-    {
-        $service = $this->ChimpService();
-        $endpoint = '/campaigns/' . $newsletterID . '/content';
-
-        $test = 'Heellloo Dunatron';
-        $obj = new DataObject();
-        $obj->template->id = $templateID;
-
-        //$data = json_encode($obj);
-        $data = '{"html": "<p>The HTML to use for the saved campaign<./p>"}';
-
-        $response = $service->request($endpoint, 'PUT', $data);
-        $bod = $response->getBody();
-        //error_log($bod);
-    }
-
-    /*
      * Can use this to get default content for template
      */
     public function getTemplateDefaultContent($templateID)
     {
         $service = $this->ChimpService();
         $endpoint = '/templates/' . $templateID . '/default-content';
-
-        $response = $service->request($endpoint, 'GET');
-        $body = $response->getBody();
-        $decodedBody = json_decode($body);
-        var_dump($decodedBody);
-
+        $service->request($endpoint, 'GET');
     }
 
     public function BuildNewsletterContent()
@@ -267,27 +239,30 @@ class Newsletter extends DataObject
         $third = Page::get()->byID($this->ThirdLetterBlock);
 
         $mainImage = $this->buildMailChimpImage($main->NewsLetterImage()->FileName);
-        $secondImage = $this->buildMailChimpImage($main->NewsLetterImage()->FileName);
-        $thirdImage = $this->buildMailChimpImage($main->NewsLetterImage()->FileName);
+        $buildMainImage = '<img style="max-width:600px;" src="data:image/jpeg;base64,' . $mainImage . '">';
+        $secondImage = $this->buildMailChimpImage($second->NewsLetterImage()->FileName);
+        $buildSecondImage = '<img style="max-width:290px;" src="data:image/jpeg;base64,' . $secondImage . '">';
+        $thirdImage = $this->buildMailChimpImage($third->NewsLetterImage()->FileName);
+        $buildThirdImage = '<img style="max-width:290px;" src="data:image/jpeg;base64,' . $thirdImage . '">';
 
         error_log($mainImage);
 
         $MainData = ArrayData::create(array(
             'Title' => $main->Title,
             'Content' => strip_tags($main->Content),
-            'ImageURL' => $mainImage
+            'ImageURL' => $buildMainImage
         ));
 
         $SecondData = ArrayData::create(array(
             'Title' => $second->Title,
             'Content' => strip_tags($second->Content),
-            'ImageURL' => $secondImage
+            'ImageURL' => $buildSecondImage
         ));
 
         $ThirdData = ArrayData::create(array(
             'Title' => $third->Title,
             'Content' => strip_tags($third->Content),
-            'ImageURL' => $thirdImage
+            'ImageURL' => $buildThirdImage
         ));
 
         $extraString = $this->ExtraLetterLinks;
@@ -313,12 +288,14 @@ class Newsletter extends DataObject
         return $data;
     }
 
+    // Return 64 bit Image
     public function buildMailChimpImage($pathname)
     {
-        $local = 'http://localhost:8888/TRONSTUDIOS/royal-scripts/';
-        $b64image = base64_encode(file_get_contents($local .= $pathname));
-        $buildMainImage = '<img src="data:image/jpeg;base64,' . $b64image . '">';
-        return $buildMainImage;
+        //$local = 'http://localhost:8888/TRONSTUDIOS/royal-scripts/';
+        $baseURL = $_SERVER['SERVER_NAME'];
+        $url = 'http://'.$baseURL.'/';
+        $b64image = base64_encode(file_get_contents($url .= $pathname));
+        return $b64image;
     }
 
 
