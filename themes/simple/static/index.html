@@ -2,73 +2,63 @@
 <html>
 <head>
 	<title></title>
-
 	<style type="text/css">
-		body{
-			background-color:#000000;
-		}
-		h1{
-			color:grey;
-		}
-		p{
-			color:grey;
-		}
-		li{
-			color:grey;
-		}
-		table td{
-			background-color:#212020;
-		}
-		a{
-			background-color:grey;
-			color:#212020;
-			padding-top:10px;
-			padding-bottom:10px;
-			padding-left:20px;
-			padding-right:20px;
-			border-radius:5px;
-			text-decoration:none;
+		.tpl-content{
+			padding:0 !important;
 		}
 	</style></head>
-<body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0">
+<body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0" bgcolor="#000000;">
 <center>
-	<table border="0" cellpadding="0" cellspacing="0" width="600px">
 
+	<table border="0" cellpadding="0" cellspacing="0" width="600px" style="color:#FFFFFF; line-height: 1.5em; font-family: Helvetica, Sans-Serif"> <!-- assume all text will to inherit this color -->
 		<!-- header -->
 		<tr>
-			<td align="right">
+			<td style="padding:20px 0;">
 				<!-- logo image -->
-				<img width="200px" height="100px" src="http://placehold.it/200x100"> <!-- made-up image dimensions -->
+				<table border="0" cellpadding="0" cellspacing="0" width="600px">
+					<tr>
+						<td width="400px" align="right" valign="middle">
+							<table height="110px" style="margin-right:0; border-right:1px solid red;">
+								<tr>
+									<td align="right">
+										<h1 mc:edit="template_title" style="color: white; padding-right: 10px; font-size: 32px; margin-top: 0; margin-bottom: 0;">Title</h1>
+										<p mc:edit="template_subtitle" style="padding-right: 12px; font-size: 14px; color: #FFFFFF; padding-top: 4px; margin-top: 0; margin-bottom: 0;">Subtitle</p>
+									</td>
+								</tr>
+							</table>
+
+						</td>
+						<td width="130px" align="right">
+							<!-- logo image -->
+							<img src="https://gallery.mailchimp.com/aeb1040afb4474ec7a22ca8da/images/73e3aa04-bcce-4651-a964-de12a74e0a51.png" alt="" border="0" style="height: 100px; width: 150px; margin: 0; padding: 0;" width="150" height="100" mc:edit="logo_image">
+						</td>
+					</tr>
+				</table>
 			</td>
 		</tr>
 		<!-- Banner image -->
 		<tr>
-			<td align="center" valign="top">
+			<td align="center" valign="top" bgcolor="#353C41">
 				<!-- <img mc:edit="header_image"> -->
-				<p mc:edit="content_9">IMAGE PLEASE</p>
+				<p mc:edit="content_9" style="margin: 0;">IMAGE PLEASE</p>
 			</td>
-
 		</tr>
 		<!-- main story -->
 		<tr valign="top">
 			<td valign="top">
-
-				<table border="0" cellpadding="20" cellspacing="0" width="600px">
+				<!-- Main Panel color -->
+				<table border="0" cellpadding="20" cellspacing="0" width="600px" bgcolor="#61b3e4">
 					<tr>
-						<td align="">
-							<h1 mc:edit="main_title">Main story title</h1>
-
-							<p mc:edit="main_content">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+						<td align="center">
+							<h1 style="font-size:20px; margin-top:0;" mc:edit="main_title">Main story title</h1>
+							<p style="font-size:16px;" mc:edit="main_content">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
 								tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
 								quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
 								consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
 								cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
 								proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-							<br>
-							<a href="/">Website link</a>
-							<br>
-							<br>
 
+							<div style="padding-top: 40px; margin-bottom: 20px;" mc:edit="main_link"><a style="background-color:#FFFFFF; color:#212020; padding-top:10px; padding-bottom:10px; padding-left:20px; padding-right:20px; border-radius:5px; text-decoration:none;" href="/">Website link</a></div>
 						</td>
 					</tr>
 				</table>
@@ -78,36 +68,52 @@
 		<tr>
 			<td style="border-top: 10px solid #000000">
 				<!-- nested table -->
-				<table border="0" cellpadding="20" cellspacing="0" width="600px">
 
+				<table border="0" cellpadding="0" cellspacing="0" width="600px">
 					<tr>
-						<td align="center" width="290px" valign="top" style="border-right: 10px solid #000000">
-							<p mc:edit="second_image">IMAGE PLEASE</p>
-							<h1 mc:edit="second_title">Story 1</h1>
-							<p mc:edit="second_content">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-								tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-								quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-								consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-								cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-								proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-							<br>
-							<a href="/">Website link</a>
-							<br>
-							<br>
+						<td align="center" width="295px" valign="top" style="border-right: 5px solid #000000" bgcolor="#353C41">
+
+							<!--<img mc:edit="second_image" width="295px" height="150px" src="http://placehold.it/295x150" />-->
+							<span mc:edit="second_image" style="margin: 0;">IMAGE PLEASE</span>
+							<!--<img width="295px" height="150px" src="http://placehold.it/295x150"> &lt;!&ndash; made-up image dimensions &ndash;&gt;-->
+							<!-- second panel color -->
+							<table border="0" cellpadding="20" cellspacing="0" bgcolor="#61b3e4">
+								<tr>
+									<td align="center">
+										<h1 style="font-size:20px; margin-top:0;" mc:edit="second_title">Story 1</h1>
+										<p mc:edit="second_content">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+											tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+											quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+											consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+											cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+											proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+										<div style="padding-top: 20px; margin-bottom: 20px;" mc:edit="second_link"><a style="background-color:#FFFFFF; color:#212020; padding-top:10px; padding-bottom:10px; padding-left:20px; padding-right:20px; border-radius:5px; text-decoration:none;" href="/">Website link</a></div>
+
+									</td>
+								</tr>
+							</table>
 						</td>
-						<td align="center" width="290px" valign="top" style="border-left: 10px solid #000000">
-							<p mc:edit="third_image">IMAGE PLEASE</p>
-							<h1 mc:edit="third_title">Story 2</h1>
-							<p mc:edit="third_content">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-								tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-								quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-								consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-								cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-								proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-							<br>
-							<a href="/">Website link</a>
-							<br>
-							<br>
+						<td align="center" width="295px" valign="top" style="border-left: 5px solid #000000" bgcolor="#353C41">
+
+							<p mc:edit="third_image" style="margin: 0">IMAGE PLEASE</p>
+							<!--<img width="295px" height="150px" src="http://placehold.it/295x150"> &lt;!&ndash; made-up image dimensions &ndash;&gt;-->
+							<!-- third panel color -->
+							<table border="0" cellpadding="20" cellspacing="0" bgcolor="#61b3e4">
+								<tr>
+									<td align="center">
+
+										<h1 style="font-size:20px; margin-top:0;" mc:edit="third_title">Story 2</h1>
+										<p mc:edit="third_content">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+											tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+											quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+											consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+											cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+											proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+										<div style="padding-top: 20px; margin-bottom: 20px;" mc:edit="third_link"><a style="background-color:#FFFFFF; color:#212020; padding-top:10px; padding-bottom:10px; padding-left:20px; padding-right:20px; border-radius:5px; text-decoration:none;" href="/">Website link</a></div>
+									</td>
+								</tr>
+							</table>
 						</td>
 					</tr>
 					<tr>
@@ -115,20 +121,32 @@
 				</table>
 			</td>
 		</tr>
-		<!-- Categories (repeat as needed -->
+		<!-- Extra Links -->
 		<tr>
-			<td valign="top" style="border-top: 10px solid #000000">
-
-				<table border="0" cellpadding="20" cellspacing="0" width="600px">
+			<td valign="top" style="border-top: 10px solid #000000" bgcolor="#353C41">
+				<!-- NOTE: does repeatable tag work with populating from Silverscripe?-->
+				<table border="0" cellpadding="20" cellspacing="0" width="600px" bgcolor="#353C41">
 					<tr>
 						<td align="center">
-							<h1>Category</h1>
-							<p>links</p>
-							<ul mc:edit="extra_links">bullet point link</ul>
+							<!-- NOTE: need to check w/ Di if we can drop the bullet points as they will be a real pain to impliment -->
+							<p mc:edit="extra_links" style="color:white; text-align: center; display:inline-block">link</p>
 						</td>
 					</tr>
 				</table>
+			</td>
+		</tr>
+		<!-- Social icons -->
+		<tr>
+			<td align="center" bgcolor="#212020" style="border-top: 10px solid #000000; background-color: red;">
 
+				<table border="0" cellpadding="0" cellspacing="0" style="padding-top: 10px; padding-bottom: 5px">
+					<tr>
+						<td><a href="https://www.facebook.com/RoyalSocietyofNewZealand/"><img src="https://gallery.mailchimp.com/aeb1040afb4474ec7a22ca8da/images/1544467e-5118-4324-848b-d81db9e96e7c.png" alt="Facebook" border="0" style="margin: 0; padding: 0;" mc:edit="fb_icon"></a></td>
+						<td width="15px"></td>
+						<td><a href="https://twitter.com/royalsocietynz"><img src="https://gallery.mailchimp.com/aeb1040afb4474ec7a22ca8da/images/153a7f94-a2a1-48d7-9187-d3a2b8f6b901.png" alt="Twitter" border="0" style="margin: 0; padding: 0;" mc:edit="twitter_icon"></a></td>
+						<!-- <td><a href="/"><img alt="Vimeo" src="images/social-icons/vimeo.png"></a></td> -->
+					</tr>
+				</table>
 			</td>
 		</tr>
 	</table>
